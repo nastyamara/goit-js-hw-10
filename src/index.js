@@ -5,11 +5,11 @@ const DEBOUNCE_DELAY = 300;
 
 const refs = {
     input: document.querySelector('#search-box'),
-    countryList: document.querySelector('country-list'),
+    countryList: document.querySelector('.country-list'),
     countryCard: document.querySelector('.country-info'),
 };
 
-console.log(refs.input)
+console.log(refs.countryList)
 
 refs.input.addEventListener('input', onInputChange)
 //addEventListener на форму {submi on submit button {prevent default; fetch, then}}
@@ -25,7 +25,10 @@ function fetchCountries(countryName) {
     console.log(countryName)
     fetch(`https://restcountries.com/v3.1/name/${countryName}?fields=name,capital,population,flags,languages`)
         .then((response) => response.json())
-        .then((countries) => renderCountryCard(countries))
+        .then((countries) => {
+           
+            renderCountryList(countries)
+        })
 }
      
 function renderCountryCard(countries) {
@@ -42,9 +45,17 @@ function renderCountryCard(countries) {
     refs.countryCard.innerHTML = cardMarkup;
 }
 
-function renderCountryList() {
-    const listMarkup = `<li>${flag} ${country}</li>`; 
+function renderCountryList(countries) {
+
+    let listMarkup = countries.map(({ name:{official}, flags: {svg}}) => {
+        return `<li><img src=${svg} alt="Flag of ${official}" width="15" height="10"> ${official}</li>`
+    }).join(' ');
+    
+ refs.countryList.innerHTML = listMarkup;
+}
+   
+
+
+
     
 
-    refs.countryList.innerHTML = listMarkup;
-}
