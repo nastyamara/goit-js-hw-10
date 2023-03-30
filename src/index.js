@@ -15,8 +15,10 @@ refs.input.addEventListener('input', debounce(onInputChange, DEBOUNCE_DELAY));
 
 function onInputChange(e) {
     let search = refs.input.value.trim();
+    clearHtml();
     console.log(search);
-    fetchCountries(search).then(countries => {
+    if(search !== "")
+{    fetchCountries(search).then(countries => {
         if (countries.length === 1) {
             renderCountryCard(countries);
             refs.countryList.innerHTML = "";}
@@ -27,9 +29,8 @@ function onInputChange(e) {
         }
     }).catch((error) => {
         Notiflix.Notify.failure('"Oops, there is no country with that name"')
-        refs.countryCard.innerHTML = "";
-        refs.countryList.innerHTML = "";
-        });
+clearHtml()
+        });}
     }
 
 function renderCountryCard(countries) {
@@ -50,6 +51,11 @@ function renderCountryList(countries) {
     }).join(' ');
     
  refs.countryList.innerHTML = listMarkup;
+}
+
+function clearHtml() {
+        refs.countryCard.innerHTML = "";
+        refs.countryList.innerHTML = "";
 }
    
 
